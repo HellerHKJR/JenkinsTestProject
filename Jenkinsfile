@@ -1,3 +1,9 @@
+def getVersionFromXML(filePath) {
+    def xmlText = readFile(file: fileName)
+    def xml = new XmlSlurper().parseText(xmlText)
+    return xml.version.text()
+}
+
 pipeline {
     agent any
 
@@ -14,6 +20,16 @@ pipeline {
             }
         }
 
+        stage('Get Version') {
+            steps {
+                script {                    
+                    def version = getVersionFromXML('Config/JRConfig.xml')
+                    VERSION = version
+                    echo "Version: ${VERSION}"
+                }
+            }
+        }
+
         // 'Restore' 단계를 삭제하거나 아래 빌드 단계에 통합합니다.
         stage('Build') {
             steps {
@@ -25,7 +41,7 @@ pipeline {
         stage('Inno Setup') {
             steps {
                 // 이 경로는 서버에 Inno Setup이 설치되어 있는지 꼭 확인하세요!
-                bat '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" "inno_setup.iss"'
+                bat '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" /dVersionInfo=\"${VERSION}\" "inno_setup.iss"'
             }
         }
         
