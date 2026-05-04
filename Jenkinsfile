@@ -22,6 +22,7 @@ pipeline {
 
         stage('Get Version') {
             steps {
+                bat 'dir /s /b JRConfig.xml' 
                 script {                    
                     def version = getVersionFromXML('Config/JRConfig.xml')
                     VERSION = version
