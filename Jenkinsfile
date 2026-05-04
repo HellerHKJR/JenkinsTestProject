@@ -21,10 +21,9 @@ pipeline {
         }
 
         stage('Get Version') {
-            steps {
-                bat 'dir /s /b JRConfig.xml' 
+            steps {                
                 script {                    
-                    def version = getVersionFromXML('Config/JRConfig.xml')
+                    def version = getVersionFromXML('JenkinsTestProject/Config/JRConfig.xml')
                     VERSION = version
                     echo "Version: ${VERSION}"
                 }
