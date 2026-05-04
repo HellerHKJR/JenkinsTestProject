@@ -1,4 +1,4 @@
-def getVersionFromXML(filePath) {
+def getVersionFromXML(fileName) {
     def xmlText = readFile(file: fileName)
     def xml = new XmlSlurper().parseText(xmlText)
     return xml.version.text()
