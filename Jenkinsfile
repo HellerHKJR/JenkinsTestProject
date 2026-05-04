@@ -1,5 +1,6 @@
 def getVersionFromXML(fileName) {
-    def xmlText = readFile(file: fileName)
+    def xmlText = readFile(file: fileName, encoding: "UTF-8")
+    xmlText = xmlText.substring(xmlText.indexOf("<"))
     def xml = new XmlSlurper().parseText(xmlText)
     return xml.version.text()
 }
