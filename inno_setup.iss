@@ -11,7 +11,7 @@ OutputBaseFilename=JenkinsTestProjectInstaller
 ; 빌드된 결과물(.exe) 경로를 적어줍니다. 
 ; 빌드 결과가 bin\Release 폴더에 생긴다고 가정할 때:
 Source: "JenkinsTestProject\bin\Release\*.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "JenkinsTestProject\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion skipifsilent
+Source: "JenkinsTestProject\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 
 [Icons]
 Name: "{group}\JenkinsTestProject"; Filename: "{app}\JenkinsTestProject.exe"
