@@ -42,30 +42,41 @@ pipeline {
         stage('Modify Config') {
             steps {
                 script {
-                    // 이미 Jenkinsfile 상단에 정의된 회사 이름 변수 사용
-                    def startupArg = params.StartupArg
-                    
-                    // 빌드 결과물이 나온 경로 (이미지 상의 폴더 위치)
+                    def startupArgValue = params.StartupArg
                     def configPath = "${WORKSPACE}\\bin\\Release\\JenkinsTestProject.exe.config"
 
+                    echo "Target File: ${configPath}"
+                    echo "New Value: ${startupArgValue}"
+
                     powershell """
-                        [xml]\$xml = Get-Content '${configPath}'
-                
-                        # StartupArg 세팅 노드 찾기
-                        \$node = \$xml.configuration.applicationSettings.JenkinsTestProject.Properties.Settings.setting | Where-Object { \$_.name -eq 'StartupArg' }
-                
-                        if (\$node) {
-                            # Change value to by inputted StartupArg
-                            \$node.value = "${startupArg}"
-                            \$xml.Save('${configPath}')
-                            Write-Host "Successfully updated StartupArg to ${startupArg}"
+                        if (Test-Path '${configPath}') {
+                            [xml]\$xml = Get-Content '${configPath}'
+                    
+                            # XML 구조를 정확히 타겟팅 (따옴표 주의)
+                            \$node = \$xml.configuration.applicationSettings.'JenkinsTestProject.Properties.Settings'.setting | Where-Object { \$_.name -eq 'StartupArg' }
+
+                            if (\$node) {
+                                Write-Host "Current Value in XML: " \$node.value
+                        
+                                # 값 변경
+                                \$node.value = "${startupArgValue}"
+                        
+                                # 저장 전 확인
+                                Write-Host "Changing to: " \$node.value
+                        
+                                \$xml.Save('${configPath}')
+                                Write-Host "Save Completed!"
+                            } else {
+                                Write-Error "CRITICAL: Could not find 'StartupArg' node in the XML structure!"
+                            }
                         } else {
-                            Write-Error "Could not find StartupArg node."
+                            Write-Error "CRITICAL: Config file NOT FOUND at ${configPath}"
                         }
                     """
                 }
             }
         }
+
 
         stage('Inno Setup') {
             steps {
