@@ -24,7 +24,7 @@ pipeline {
         stage('Get Version') {
             steps {                
                 script {                    
-                    def version = getVersionFromXML("JenkinsTestProject/Config/${params.CompanyName}/${params.CompanyName}Config.xml")
+                    def version = getVersionFromXML("JenkinsTestProject/Config/${params.CompanyName}/${params.CompanyName}.Config.xml")
                     VERSION = version
                     echo "Version: ${VERSION}"
                 }
