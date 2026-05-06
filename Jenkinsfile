@@ -24,7 +24,7 @@ pipeline {
         stage('Get Version') {
             steps {                
                 script {                    
-                    def version = getVersionFromXML('JenkinsTestProject/Config/${params.CompanyName}/${params.CompanyName}Config.xml')
+                    def version = getVersionFromXML("JenkinsTestProject/Config/${params.CompanyName}/${params.CompanyName}Config.xml")
                     VERSION = version
                     echo "Version: ${VERSION}"
                 }
@@ -43,7 +43,7 @@ pipeline {
             steps {
                 script {
                     // 이미 Jenkinsfile 상단에 정의된 회사 이름 변수 사용
-                    def companyName = ${params.CompanyName} 
+                    def companyName = params.CompanyName 
                     // 빌드 결과물이 나온 경로 (이미지 상의 폴더 위치)
                     def configPath = "${WORKSPACE}\\bin\\Release\\JenkinsTestProject.exe.config"
 
