@@ -21,4 +21,8 @@ Source: "JenkinsTestProject\bin\Release\Config\*.*"; DestDir: "{app}\Config"; Fl
 Source: "JenkinsTestProject\bin\Release\Config\{#ConfigPath}\*.*"; DestDir: "{app}\Config\{#ConfigPath}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{group}\JenkinsTestProject"; Filename: "{app}\JenkinsTestProject.exe"
+; 바탕화면 바로가기 아이콘 설정
+Name: "{commondesktop}\{#ProjectName}"; Filename: "{app}\JenkinsTestProject.exe"; IconFilename: "{app}\Remote.ico"
+
+; 시작 메뉴 바로가기 아이콘 설정
+Name: "{group}\{#ProjectName}"; Filename: "{app}\JenkinsTestProject.exe"; IconFilename: "{app}\Remote.ico"
