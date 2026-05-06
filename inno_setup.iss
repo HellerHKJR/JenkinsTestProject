@@ -1,14 +1,15 @@
 #define CustomerName=CompanyName
 
 [Setup]
+; Name of program for Delete in control panel
 AppName=JenkinsTestProject
 AppVersion={#VersionInfo}
 AppPublisher=Heller Industries
-DefaultDirName={autopf}\JenkinsTestProject
-DefaultGroupName=JenkinsTestProject
+DefaultDirName=C:\Heller Industries\{#CustomerName}_MES
+DefaultGroupName=Heller Industries
 ; 설치 파일이 저장될 위치와 이름
 OutputDir=.\Output
-OutputBaseFilename=JenkinsTestProjectInstaller_v{#VersionInfo}
+OutputBaseFilename={#CustomerName}_Installer_v{#VersionInfo}
 
 [Files]
 ; 빌드된 결과물(.exe) 경로를 적어줍니다. 
