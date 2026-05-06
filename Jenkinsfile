@@ -56,7 +56,7 @@ pipeline {
                 
                         if (\$node) {
                             # Change value to by inputted StartupArg
-                            \$node.value = startupArg
+                            \$node.value = "${startupArg}"
                             \$xml.Save('${configPath}')
                             Write-Host "Successfully updated StartupArg to ${startupArg}"
                         } else {
