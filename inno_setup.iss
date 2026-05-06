@@ -1,5 +1,5 @@
 #define ProjectName=ProjectName
-@define ConfigPath=ConfigPath
+#define ConfigPath=ConfigPath
 
 [Setup]
 ; Name of program for Delete in control panel
