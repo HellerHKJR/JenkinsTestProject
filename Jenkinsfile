@@ -24,9 +24,9 @@ pipeline {
         stage('Get Version') {
             steps {                
                 script {                             
-                    def version = getVersionFromXML("JenkinsTestProject/Config/${StartupArg}")
+                    def version = getVersionFromXML("JenkinsTestProject/Config/${params.StartupArg}")
                     VERSION = version                    
-                    echo "Version: ${VERSION}, StartupArg: ${StartupArg}"
+                    echo "Version: ${VERSION}, StartupArg: ${params.StartupArg}"
                 }
             }
         }
@@ -71,7 +71,7 @@ pipeline {
             steps {
                 // 이 경로는 서버에 Inno Setup이 설치되어 있는지 꼭 확인하세요!
                 def ConfigPath = StartupArg.split('/')[0]
-                bat """ "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" /dVersionInfo=${VERSION} /dProjectName=${ProjectName} /dConfigPath=${ConfigPath} inno_setup.iss """
+                bat """ "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" /dVersionInfo=${VERSION} /dProjectName=${params.ProjectName} /dConfigPath=${params.ConfigPath} inno_setup.iss """
             }
         }
         
