@@ -28,7 +28,8 @@ namespace JenkinsTestProject
 		{
 			try
 			{
-				string configPath = Path.Combine(Application.StartupPath, "Config", "JRConfig.xml");
+
+				string configPath = Path.Combine(Application.StartupPath, "Config", Properties.Settings.Default.StartupArg);
 
 				if (File.Exists(configPath))
 				{
