@@ -43,7 +43,7 @@ pipeline {
             steps {
                 script {
                     def startupArgValue = params.StartupArg
-                    def configPath = "${WORKSPACE}\\bin\\Release\\JenkinsTestProject.exe.config"
+                    def configPath = "${WORKSPACE}\\JenkinsTestProject\\bin\\Release\\JenkinsTestProject.exe.config"
 
                     echo "Target File: ${configPath}"
                     echo "New Value: ${startupArgValue}"
