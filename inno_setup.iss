@@ -5,6 +5,7 @@
 ; Name of program for Delete in control panel
 AppName=JenkinsTestProject_{#ProjectName}
 AppVersion={#VersionInfo}
+AppVerName={#ProjectName}_Installer_v{#VersionInfo} 
 AppPublisher=Heller Industries
 DefaultDirName=C:\Heller Industries\{#ProjectName}
 DefaultGroupName=Heller Industries
