@@ -1,4 +1,4 @@
-#define CustomerName={#CompanyName}
+#define CustomerName=CompanyName
 
 [Setup]
 AppName=JenkinsTestProject
@@ -14,6 +14,7 @@ OutputBaseFilename=JenkinsTestProjectInstaller_v{#VersionInfo}
 ; 빌드된 결과물(.exe) 경로를 적어줍니다. 
 ; 빌드 결과가 bin\Release 폴더에 생긴다고 가정할 때:
 Source: "JenkinsTestProject\bin\Release\*.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "JenkinsTestProject\bin\Release\*.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "JenkinsTestProject\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "JenkinsTestProject\bin\Release\Config\{#CustomerName}\*.*"; DestDir: "{app}\Config\{#CustomerName}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "JenkinsTestProject\bin\Release\Config\*.*"; DestDir: "{app}\Config"; Flags: ignoreversion
