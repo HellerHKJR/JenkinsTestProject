@@ -6,7 +6,7 @@
 AppName=JenkinsTestProject_{#ProjectName}
 AppVersion={#VersionInfo}
 AppPublisher=Heller Industries
-DefaultDirName=C:\Heller Industries\{#ProjectName}_MES
+DefaultDirName=C:\Heller Industries\{#ProjectName}
 DefaultGroupName=Heller Industries
 ; 설치 파일이 저장될 위치와 이름
 OutputDir=.\Output
@@ -17,7 +17,7 @@ OutputBaseFilename={#ProjectName}_Installer_v{#VersionInfo}
 ; 빌드 결과가 bin\Release 폴더에 생긴다고 가정할 때:
 Source: "JenkinsTestProject\bin\Release\*.*"; DestDir: "{app}"; Flags: ignoreversion
 Source: "JenkinsTestProject\bin\Release\Config\*.*"; DestDir: "{app}\Config"; Flags: ignoreversion
-Source: "JenkinsTestProject\bin\Release\Config\{#ConfigPath}\*.*"; DestDir: "{app}\Config\{#CustomerName}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "JenkinsTestProject\bin\Release\Config\{#ConfigPath}\*.*"; DestDir: "{app}\Config\{#ConfigPath}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\JenkinsTestProject"; Filename: "{app}\JenkinsTestProject.exe"
