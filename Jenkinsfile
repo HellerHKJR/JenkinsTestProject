@@ -55,7 +55,7 @@ pipeline {
                         \$node = \$xml.configuration.applicationSettings.JenkinsTestProject.Properties.Settings.setting | Where-Object { \$_.name -eq 'StartupArg' }
                 
                         if (\$node) {
-                            # 값을 ABC\\ABC.Config.xml 형태로 변경
+                            # Change value to by inputted StartupArg
                             \$node.value = startupArg
                             \$xml.Save('${configPath}')
                             Write-Host "Successfully updated StartupArg to ${startupArg}"
@@ -69,9 +69,11 @@ pipeline {
 
         stage('Inno Setup') {
             steps {
-                // 이 경로는 서버에 Inno Setup이 설치되어 있는지 꼭 확인하세요!
-                def extractedConfigPath = params.StartupArg.split('/')[0]
-                bat """ "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" /dVersionInfo=${VERSION} /dProjectName=${params.ProjectName} /dConfigPath=${extractedConfigPath} inno_setup.iss """
+                script {
+                    // inno setup
+                    def extractedConfigPath = params.StartupArg.split('/')[0]
+                    bat """ "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" /dVersionInfo=${VERSION} /dProjectName=${params.ProjectName} /dConfigPath=${extractedConfigPath} inno_setup.iss """
+                }
             }
         }
         
