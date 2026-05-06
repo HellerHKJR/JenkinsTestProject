@@ -23,10 +23,10 @@ pipeline {
 
         stage('Get Version') {
             steps {                
-                script {                    
-                    def version = getVersionFromXML("JenkinsTestProject/Config/${params.CompanyName}/${params.CompanyName}.Config.xml")
-                    VERSION = version
-                    echo "Version: ${VERSION}"
+                script {                             
+                    def version = getVersionFromXML("JenkinsTestProject/Config/${StartupArg}")
+                    VERSION = version                    
+                    echo "Version: ${VERSION}, StartupArg: ${StartupArg}"
                 }
             }
         }
@@ -43,7 +43,8 @@ pipeline {
             steps {
                 script {
                     // 이미 Jenkinsfile 상단에 정의된 회사 이름 변수 사용
-                    def companyName = params.CompanyName 
+                    def startupArg = params.StartupArg
+                    
                     // 빌드 결과물이 나온 경로 (이미지 상의 폴더 위치)
                     def configPath = "${WORKSPACE}\\bin\\Release\\JenkinsTestProject.exe.config"
 
@@ -55,9 +56,9 @@ pipeline {
                 
                         if (\$node) {
                             # 값을 ABC\\ABC.Config.xml 형태로 변경
-                            \$node.value = "${companyName}\\${companyName}.Config.xml"
+                            \$node.value = startupArg
                             \$xml.Save('${configPath}')
-                            Write-Host "Successfully updated StartupArg to ${companyName}"
+                            Write-Host "Successfully updated StartupArg to ${startupArg}"
                         } else {
                             Write-Error "Could not find StartupArg node."
                         }
@@ -69,7 +70,8 @@ pipeline {
         stage('Inno Setup') {
             steps {
                 // 이 경로는 서버에 Inno Setup이 설치되어 있는지 꼭 확인하세요!
-                bat """ "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" /dVersionInfo=${VERSION} /dCompanyName=${params.CompanyName} inno_setup.iss """
+                def ConfigPath = StartupArg.split('/')[0]
+                bat """ "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" /dVersionInfo=${VERSION} /dProjectName=${ProjectName} /dConfigPath=${ConfigPath} inno_setup.iss """
             }
         }
         
