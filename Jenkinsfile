@@ -24,7 +24,7 @@ pipeline {
         stage('Get Version') {
             steps {                
                 script {                    
-                    def version = getVersionFromXML('JenkinsTestProject/Config/JRConfig.xml')
+                    def version = getVersionFromXML('JenkinsTestProject/Config/${params.CompanyName}/${params.CompanyName}Config.xml')
                     VERSION = version
                     echo "Version: ${VERSION}"
                 }
@@ -39,10 +39,37 @@ pipeline {
             }
         }
 
+        stage('Modify Config') {
+            steps {
+                script {
+                    // 이미 Jenkinsfile 상단에 정의된 회사 이름 변수 사용
+                    def companyName = ${params.CompanyName} 
+                    // 빌드 결과물이 나온 경로 (이미지 상의 폴더 위치)
+                    def configPath = "${WORKSPACE}\\bin\\Release\\JenkinsTestProject.exe.config"
+
+                    powershell """
+                        [xml]\$xml = Get-Content '${configPath}'
+                
+                        # StartupArg 세팅 노드 찾기
+                        \$node = \$xml.configuration.applicationSettings.JenkinsTestProject.Properties.Settings.setting | Where-Object { \$_.name -eq 'StartupArg' }
+                
+                        if (\$node) {
+                            # 값을 ABC\\ABC.Config.xml 형태로 변경
+                            \$node.value = "${companyName}\\${companyName}.Config.xml"
+                            \$xml.Save('${configPath}')
+                            Write-Host "Successfully updated StartupArg to ${companyName}"
+                        } else {
+                            Write-Error "Could not find StartupArg node."
+                        }
+                    """
+                }
+            }
+        }
+
         stage('Inno Setup') {
             steps {
                 // 이 경로는 서버에 Inno Setup이 설치되어 있는지 꼭 확인하세요!
-                bat "\"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe\" /dVersionInfo=\"${VERSION}\" \"inno_setup.iss\""
+                bat "\"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe\" /dVersionInfo=\"${VERSION}\" /dCompanyName=\"${params.CompanyName}\"  \"inno_setup.iss\""
             }
         }
         
