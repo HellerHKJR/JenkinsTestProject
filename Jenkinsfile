@@ -69,7 +69,7 @@ pipeline {
         stage('Inno Setup') {
             steps {
                 // 이 경로는 서버에 Inno Setup이 설치되어 있는지 꼭 확인하세요!
-                bat "\"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe\" /dVersionInfo=\"${VERSION}\" /dCompanyName=\"${params.CompanyName}\"  \"inno_setup.iss\""
+                bat """ "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" /dVersionInfo=${VERSION} /dCompanyName=${params.CompanyName} inno_setup.iss """
             }
         }
         
