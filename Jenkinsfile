@@ -87,7 +87,7 @@ pipeline {
         
         stage('Archive') {
             steps {
-                archiveArtifacts artifacts: 'Output/*.exe', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'HS3Output/*.exe', allowEmptyArchive: true
             }
         }
     }

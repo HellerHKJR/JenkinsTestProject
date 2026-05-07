@@ -5,13 +5,13 @@
 ; Name of program for Delete in control panel
 AppName=JenkinsTestProject_{#ProjectName}
 AppVersion={#VersionInfo}
-AppVerName=Heller_{#ProjectName}_Installer_v{#VersionInfo} 
+AppVerName=Heller_{#ProjectName} 
 AppPublisher=Heller Industries
 DefaultDirName=C:\Heller Industries\{#ProjectName}
 DefaultGroupName=Heller Industries
 
-OutputDir=.\Output
-OutputBaseFilename={#ProjectName}_Installer_v{#VersionInfo}
+OutputDir=.\HS3Output
+OutputBaseFilename=HS3_{#ProjectName}_Installer_v{#VersionInfo}
 
 [Files]
 Source: "JenkinsTestProject\bin\Release\*.*"; DestDir: "{app}"; Flags: ignoreversion
