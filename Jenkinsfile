@@ -13,14 +13,7 @@ pipeline {
         DEVENV = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\devenv.com"
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                // use default SCM configured for the Jenkins job, which should point to your repository
-                checkout scm
-            }
-        }
-
+    stages {        
         stage('Get Version') {
             steps {                
                 script {                             
