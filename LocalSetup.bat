@@ -4,8 +4,8 @@ setlocal enabledelayedexpansion
 REM ============================================
 REM Modify these variables only
 REM ============================================
-set PROJECT_NAME=QWER
-set STARTUP_ARG=QWER/QWER.Config.xml
+set PROJECT_NAME=ABC_MES
+set STARTUP_ARG=ABC/ABC.Config.xml
 REM ============================================
 
 REM Inno Setup compiler path
@@ -28,8 +28,8 @@ if not exist "%CONFIG_FILE%" (
     goto :error
 )
 
-REM Read version from XML using PowerShell (more reliable)
-for /f "delims=" %%v in ('powershell -NoProfile -Command "[xml]$xml = Get-Content '%CONFIG_FILE%'; $xml.Configuration.version"') do set VERSION=%%v
+REM Read version from XML using PowerShell (read 'ver' attribute from Destination element)
+for /f "delims=" %%v in ('powershell -NoProfile -Command "[xml]$xml = Get-Content '%CONFIG_FILE%'; $xml.config.Destination.ver"') do set VERSION=%%v
 
 if "!VERSION!"=="" (
     echo Error: Could not read version from %CONFIG_FILE%
