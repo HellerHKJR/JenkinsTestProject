@@ -38,12 +38,14 @@ pipeline {
                 echo "=========================================="
                 echo "Workspace Path: ${WORKSPACE}"
                 echo "=========================================="
-                bat '''
-                    if exist Output (
-                        echo Deleting Output folder...
-                        rmdir /S /Q Output
-                    )
-                '''
+                
+                // Use the following command to delete the Output(Unnessacery folder) folder if it exists, uncomment if needed
+                // bat '''
+                //     if exist Output (
+                //         echo Deleting Output folder...
+                //         rmdir /S /Q Output
+                //     )
+                // '''
 
                 // Show directory structure excluding bin and obj folders
                 powershell '''
