@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Configuration>
-	<version>1.2.3.4</version>
-	<helloMessage>Hello, ABC!</helloMessage>
-</Configuration>
+<config>
+	<Destination ver="1.5.8.14">
+		<Caption>ABC Company</Caption>
+		<MainView>PJMainView</MainView>
+		<OvenVersion>8.0.0.70</OvenVersion>
+		<WriteIntegratedLog use="true" deletePeriod ="30"/>
+		<!--Unit:day-->
+	</Destination>
+</config>

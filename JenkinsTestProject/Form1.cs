@@ -36,7 +36,7 @@ namespace JenkinsTestProject
 					XmlDocument xmlDoc = new XmlDocument();
 					xmlDoc.Load(configPath);
 
-					XmlNode helloMessageNode = xmlDoc.SelectSingleNode("//helloMessage");
+					XmlNode helloMessageNode = xmlDoc.SelectSingleNode("//Caption");
 					if (helloMessageNode != null)
 					{
 						this.Text = helloMessageNode.InnerText;
