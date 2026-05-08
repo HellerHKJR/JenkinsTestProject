@@ -13,6 +13,8 @@ DefaultGroupName=Heller Industries
 OutputDir=.\HS3Output
 OutputBaseFilename=HS3_{#ProjectName}_Installer_v{#VersionInfo}
 
+UninstallDisplayIcon={app}\Remote.ico
+
 [Files]
 Source: "JenkinsTestProject\bin\Release\*.*"; DestDir: "{app}"; Flags: ignoreversion
 Source: "JenkinsTestProject\bin\Release\Config\*.*"; DestDir: "{app}\Config"; Flags: ignoreversion

@@ -40,6 +40,10 @@ pipeline {
                     VERSION = version                    
                     echo "Version: ${VERSION}, StartupArg: ${params.StartupArg}"
                 }
+
+                echo "Workspace: ${WORKSPACE}"
+                bat "echo %WORKSPACE%"
+                bat "dir"
             }
         }
 
