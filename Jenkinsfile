@@ -1,15 +1,25 @@
 def getVersionFromXML(fileName) {
-    def xmlText = readFile(file: fileName, encoding: "UTF-8")    
-    //echo "DEBUG: xmlText snippet: ${xmlText.take(100)}"     
-    xmlText = xmlText.substring(xmlText.indexOf("<"))
+    def xmlText = readFile(file: fileName, encoding: "UTF-8")
+    xmlText = xmlText.trim()
+    
+    // Remove BOM if present
+    if (xmlText.startsWith('\uFEFF')) {
+        xmlText = xmlText.substring(1)
+    }
+    
+    // Ensure we start from the first '<'
+    if (xmlText.indexOf("<") > 0) {
+        xmlText = xmlText.substring(xmlText.indexOf("<"))
+    }
+    
     def xml = new XmlSlurper().parseText(xmlText)
     
     echo "DEBUG: Root element name: ${xml.name()}"
-    
     echo "DEBUG: Destination count: ${xml.Destination.size()}"
     
-    def verAttr = xml.Destination.attributes()['ver']
-    echo "DEBUG: 'ver' attribute exists: ${!verAttr.isEmpty()}"
+    // Access the 'ver' attribute directly
+    def verAttr = xml.Destination.'@ver'.text()
+    echo "DEBUG: Version found: ${verAttr}"
     
     return verAttr
 }
