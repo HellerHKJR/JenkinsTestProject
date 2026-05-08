@@ -55,8 +55,8 @@ pipeline {
                         for ($i = 0; $i -lt $items.Count; $i++) {
                             $item = $items[$i]
                             $isLastItem = ($i -eq $items.Count - 1)
-                            $branch = if ($isLastItem) { "戌式式 " } else { "戍式式 " }
-                            $newIndent = if ($isLastItem) { "$Indent    " } else { "$Indent弛   " }
+                            $branch = if ($isLastItem) { "+-- " } else { "|-- " }
+                            $newIndent = if ($isLastItem) { "$Indent    " } else { "$Indent|   " }
                             
                             Write-Host "$Indent$branch$($item.Name)"
                             
