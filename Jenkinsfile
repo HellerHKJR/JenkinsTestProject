@@ -55,8 +55,8 @@ pipeline {
                         for ($i = 0; $i -lt $items.Count; $i++) {
                             $item = $items[$i]
                             $isLastItem = ($i -eq $items.Count - 1)
-                            $branch = if ($isLastItem) { "+-- " } else { "|-- " }
-                            $newIndent = if ($isLastItem) { "$Indent    " } else { "$Indent|   " }
+                            $branch = if ($isLastItem) { [char]0xC0 + [char]0xC4 + [char]0xC4 } else { [char]0xC3 + [char]0xC4 + [char]0xC4 }
+                            $newIndent = if ($isLastItem) { "$Indent    " } else { "$Indent" + [char]0xB3 + "   " }
                             
                             Write-Host "$Indent$branch$($item.Name)"
                             
