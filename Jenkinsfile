@@ -103,7 +103,7 @@ def runInnoSetup(version, projectName, configPath) {
 
 def restoreNuGetPackages() {
     bat '''
-        C:\\nuget\\nuget.exe restore JenkinsTestProject.sln
+        C:\\nuget\\nuget.exe restore JenkinsTestProject.sln -NonInteractive -Verbosity quiet
     '''
 }
 
