@@ -14,12 +14,8 @@ def getVersionFromXML(fileName) {
     
     def xml = new XmlSlurper().parseText(xmlText)
     
-    echo "DEBUG: Root element name: ${xml.name()}"
-    echo "DEBUG: Destination count: ${xml.Destination.size()}"
-    
     // Access the 'ver' attribute directly
     def verAttr = xml.Destination.'@ver'.text()
-    echo "DEBUG: Version found: ${verAttr}"
     
     return verAttr
 }
