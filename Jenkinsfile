@@ -40,35 +40,35 @@ pipeline {
                 echo "=========================================="
                 
                 // Show directory structure excluding bin and obj folders
-                powershell """
+                powershell '''
                     Write-Host "=== Workspace Directory Tree (excluding bin/obj) ==="
                     
                     function Show-Tree {
-                        param([string]\$Path = ".", [string]\$Indent = "", [bool]\$IsLast = \$true)
+                        param([string]$Path = ".", [string]$Indent = "", [bool]$IsLast = $true)
                         
-                        \$items = Get-ChildItem \$Path | Where-Object { 
-                            \$_.Name -notmatch '^(bin|obj)$' -and 
-                            \$_.Name -notmatch '^\\.git$' -and
-                            \$_.Name -notmatch '^\\.vs$'
+                        $items = Get-ChildItem $Path | Where-Object { 
+                            $_.Name -notmatch '^(bin|obj)$' -and 
+                            $_.Name -notmatch '^\\.git$' -and
+                            $_.Name -notmatch '^\\.vs$'
                         }
                         
-                        for (\$i = 0; \$i -lt \$items.Count; \$i++) {
-                            \$item = \$items[\$i]
-                            \$isLastItem = (\$i -eq \$items.Count - 1)
-                            \$branch = if (\$isLastItem) { "戌式式 " } else { "戍式式 " }
-                            \$newIndent = if (\$isLastItem) { "\$Indent    " } else { "\$Indent弛   " }
+                        for ($i = 0; $i -lt $items.Count; $i++) {
+                            $item = $items[$i]
+                            $isLastItem = ($i -eq $items.Count - 1)
+                            $branch = if ($isLastItem) { "戌式式 " } else { "戍式式 " }
+                            $newIndent = if ($isLastItem) { "$Indent    " } else { "$Indent弛   " }
                             
-                            Write-Host "\$Indent\$branch\$(\$item.Name)"
+                            Write-Host "$Indent$branch$($item.Name)"
                             
-                            if (\$item.PSIsContainer) {
-                                Show-Tree -Path \$item.FullName -Indent \$newIndent -IsLast \$isLastItem
+                            if ($item.PSIsContainer) {
+                                Show-Tree -Path $item.FullName -Indent $newIndent -IsLast $isLastItem
                             }
                         }
                     }
                     
                     Write-Host (Get-Location).Path
                     Show-Tree
-                """    
+                '''     
             }
         }
 
