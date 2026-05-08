@@ -24,6 +24,80 @@ def getVersionFromXML(fileName) {
     return verAttr
 }
 
+def printWorkspaceTree() {
+    powershell '''    
+        Write-Host "=== Workspace Directory Tree (excluding bin/obj) ==="
+        
+        function Show-Tree {
+            param([string]$Path = ".", [string]$Indent = "", [bool]$IsLast = $true)
+            
+            $items = Get-ChildItem $Path | Where-Object { 
+                $_.Name -notmatch '^(bin|obj)$' -and 
+                $_.Name -notmatch '^\\.git$' -and
+                $_.Name -notmatch '^\\.vs$'
+            }
+            
+            for ($i = 0; $i -lt $items.Count; $i++) {
+                $item = $items[$i]
+                $isLastItem = ($i -eq $items.Count - 1)
+                $branch = "|-- "
+                $newIndent = if ($isLastItem) { "$Indent    " } else { "$Indent|   " }
+                
+                Write-Host "$Indent$branch$($item.Name)"
+                
+                if ($item.PSIsContainer) {
+                    Show-Tree -Path $item.FullName -Indent $newIndent -IsLast $isLastItem
+                }
+            }
+        }
+        
+        Write-Host (Get-Location).Path
+        Show-Tree
+    '''
+}
+
+def modifyAppConfig(configPath, startupArgValue) {
+    powershell """
+        if (Test-Path '${configPath}') {
+            [xml]\$xml = Get-Content '${configPath}'
+            
+            \$node = \$xml.configuration.applicationSettings.'JenkinsTestProject.Properties.Settings'.setting | Where-Object { \$_.name -eq 'StartupArg' }
+
+            if (\$node) {
+                Write-Host "Current Value in XML: " \$node.value
+        
+                # Change the value
+                \$node.value = "${startupArgValue}"
+        
+                # Confirm the change
+                Write-Host "Changing to: " \$node.value
+        
+                \$xml.Save('${configPath}')
+                Write-Host "Save Completed!"
+            } else {
+                Write-Error "CRITICAL: Could not find 'StartupArg' node in the XML structure!"
+            }
+        } else {
+            Write-Error "CRITICAL: Config file NOT FOUND at ${configPath}"
+        }
+    """
+}
+
+def deleteUnnecessaryFolders(folderNames) {
+    def foldersToDelete = folderNames instanceof List ? folderNames : [folderNames]
+    
+    foldersToDelete.each { folderName ->
+        bat """
+            if exist "${folderName}" (
+                echo Deleting ${folderName} folder...
+                rmdir /S /Q "${folderName}"
+            ) else (
+                echo ${folderName} folder does not exist, skipping...
+            )
+        """
+    }
+}
+
 pipeline {
     agent any
 
@@ -34,49 +108,15 @@ pipeline {
 
     stages {            
         stage('Printout Workspace') {
-            steps {
-                echo "=========================================="
-                echo "Workspace Path: ${WORKSPACE}"
-                echo "=========================================="
-                
-                // Use the following command to delete the Output(Unnessacery folder) folder if it exists, uncomment if needed
-                // bat '''
-                //     if exist Output (
-                //         echo Deleting Output folder...
-                //         rmdir /S /Q Output
-                //     )
-                // '''
+            steps {                
+                script {
+                    // Delete unnecessary folders (can pass single folder or list)
+                    // deleteUnnecessaryFolders(Output)
+                    // deleteUnnecessaryFolders(['Output', 'HS3Output'])
 
-                // Show directory structure excluding bin and obj folders
-                powershell '''
-                    Write-Host "=== Workspace Directory Tree (excluding bin/obj) ==="
-                    
-                    function Show-Tree {
-                        param([string]$Path = ".", [string]$Indent = "", [bool]$IsLast = $true)
-                        
-                        $items = Get-ChildItem $Path | Where-Object { 
-                            $_.Name -notmatch '^(bin|obj)$' -and 
-                            $_.Name -notmatch '^\\.git$' -and
-                            $_.Name -notmatch '^\\.vs$'
-                        }
-                        
-                        for ($i = 0; $i -lt $items.Count; $i++) {
-                            $item = $items[$i]
-                            $isLastItem = ($i -eq $items.Count - 1)
-                            $branch = "|-- "
-                            $newIndent = if ($isLastItem) { "$Indent    " } else { "$Indent|   " }
-                            
-                            Write-Host "$Indent$branch$($item.Name)"
-                            
-                            if ($item.PSIsContainer) {
-                                Show-Tree -Path $item.FullName -Indent $newIndent -IsLast $isLastItem
-                            }
-                        }
-                    }
-                    
-                    Write-Host (Get-Location).Path
-                    Show-Tree
-                '''     
+                    // Show directory structure excluding bin and obj folders                
+                    printWorkspaceTree()
+                }    
             }
         }
 
@@ -105,30 +145,7 @@ pipeline {
                     echo "Target File: ${configPath}"
                     echo "New Value: ${startupArgValue}"
 
-                    powershell """
-                        if (Test-Path '${configPath}') {
-                            [xml]\$xml = Get-Content '${configPath}'
-                            
-                            \$node = \$xml.configuration.applicationSettings.'JenkinsTestProject.Properties.Settings'.setting | Where-Object { \$_.name -eq 'StartupArg' }
-
-                            if (\$node) {
-                                Write-Host "Current Value in XML: " \$node.value
-                        
-                                # Chanage the value
-                                \$node.value = "${startupArgValue}"
-                        
-                                # Confirm the change
-                                Write-Host "Changing to: " \$node.value
-                        
-                                \$xml.Save('${configPath}')
-                                Write-Host "Save Completed!"
-                            } else {
-                                Write-Error "CRITICAL: Could not find 'StartupArg' node in the XML structure!"
-                            }
-                        } else {
-                            Write-Error "CRITICAL: Config file NOT FOUND at ${configPath}"
-                        }
-                    """
+                    modifyAppConfig(configPath, startupArgValue)
                 }
             }
         }
