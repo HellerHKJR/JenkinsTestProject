@@ -28,7 +28,7 @@ def printWorkspaceTree() {
             param([string]$Path = ".", [string]$Indent = "", [bool]$IsLast = $true)
             
             $items = Get-ChildItem $Path | Where-Object { 
-                $_.Name -notmatch '^(bin|obj)$' -and 
+                $_.Name -notmatch '^(bin|obj|packages)$' -and 
                 $_.Name -notmatch '^\\.git$' -and
                 $_.Name -notmatch '^\\.vs$'
             }
@@ -160,7 +160,7 @@ pipeline {
             steps {
                 script {
                     def startupArgValue = params.StartupArg
-                    def configPath = "${WORKSPACE}\\JenkinsTestProject\\bin\\Release\\JenkinsTestProject.exe.config"
+                    def configPath = "${WORKSPACE}\\bin\\Release\\JenkinsTestProject.exe.config"
 
                     echo "Target File: ${configPath}"
                     echo "New Value: ${startupArgValue}"
