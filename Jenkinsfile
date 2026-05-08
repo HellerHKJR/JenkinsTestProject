@@ -38,7 +38,13 @@ pipeline {
                 echo "=========================================="
                 echo "Workspace Path: ${WORKSPACE}"
                 echo "=========================================="
-                
+                bat '''
+                    if exist Output (
+                        echo Deleting Output folder...
+                        rmdir /S /Q Output
+                    )
+                '''
+
                 // Show directory structure excluding bin and obj folders
                 powershell '''
                     Write-Host "=== Workspace Directory Tree (excluding bin/obj) ==="
