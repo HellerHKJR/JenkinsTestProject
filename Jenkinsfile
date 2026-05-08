@@ -101,30 +101,6 @@ def runInnoSetup(version, projectName, configPath) {
     bat """ "${isccPath}" /dVersionInfo=${version} /dProjectName=${projectName} /dConfigPath=${configPath} inno_setup.iss """
 }
 
-def ensureNuGet() {
-    powershell '''
-        $nugetPath = "C:\\nuget"
-        $nugetExe = "$nugetPath\\nuget.exe"
-        
-        if (!(Test-Path $nugetExe)) {
-            Write-Host "NuGet.exe not found. Installing..."
-            
-            # Create directory
-            New-Item -ItemType Directory -Force -Path $nugetPath | Out-Null
-            
-            # Download NuGet.exe
-            Invoke-WebRequest -Uri https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile $nugetExe
-            
-            Write-Host "NuGet.exe installed at: $nugetExe"
-        } else {
-            Write-Host "NuGet.exe already exists at: $nugetExe"
-        }
-        
-        # Verify
-        & $nugetExe help | Select-Object -First 1
-    '''
-}
-
 def restoreNuGetPackages() {
     bat '''
         C:\\nuget\\nuget.exe restore JenkinsTestProject.sln
@@ -155,11 +131,7 @@ pipeline {
 
         stage('Ensure NuGet Packages') {
             steps {
-                script {
-                    echo "=========================================="
-                    echo "Checking NuGet installation"
-                    echo "=========================================="
-                    ensureNuGet()
+                script {                   
                     echo "=========================================="
                     echo "Restoring NuGet packages"
                     echo "=========================================="
