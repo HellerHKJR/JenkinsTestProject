@@ -1,8 +1,22 @@
 def getVersionFromXML(fileName) {
-    def xmlText = readFile(file: fileName, encoding: "UTF-8")
+        def xmlText = readFile(file: fileName, encoding: "UTF-8")
+    // 원본 텍스트가 제대로 읽혔는지 확인
+    echo "DEBUG: xmlText snippet: ${xmlText.take(100)}" 
+    
     xmlText = xmlText.substring(xmlText.indexOf("<"))
     def xml = new XmlSlurper().parseText(xmlText)
-    return xml.Destination.@ver.text()
+    
+    // 구조 확인을 위해 xml의 이름을 출력
+    echo "DEBUG: Root element name: ${xml.name()}"
+    
+    // 만약 Destination 노드가 여러 개라면 리스트로 인식될 수 있음
+    echo "DEBUG: Destination count: ${xml.Destination.size()}"
+    
+    // 에러 발생 예상 지점: 속성값 존재 여부 확인
+    def verAttr = xml.Destination.@ver
+    echo "DEBUG: 'ver' attribute exists: ${!verAttr.isEmpty()}"
+    
+    return verAttr.text()
 }
 
 pipeline {
