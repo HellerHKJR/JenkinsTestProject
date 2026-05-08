@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LocalSetup.bat = LocalSetup.bat
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberFunction", "NumberFunction\NumberFunction.csproj", "{0635F168-604C-42CA-8FA8-D75E6D48388B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,10 @@ Global
 		{5C45DE6C-E442-42BD-88F6-55A87E3A6C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C45DE6C-E442-42BD-88F6-55A87E3A6C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C45DE6C-E442-42BD-88F6-55A87E3A6C07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0635F168-604C-42CA-8FA8-D75E6D48388B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0635F168-604C-42CA-8FA8-D75E6D48388B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0635F168-604C-42CA-8FA8-D75E6D48388B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0635F168-604C-42CA-8FA8-D75E6D48388B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

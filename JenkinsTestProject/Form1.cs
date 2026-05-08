@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using NumberFunction;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -47,6 +49,33 @@ namespace JenkinsTestProject
 			{
 				MessageBox.Show($"Error loading config: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
+		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+			Random rnd = new Random();
+			int randomNumber = rnd.Next(1, 101);
+
+			MessageBox.Show($"Generated random number: {NumberFunctions.Add(randomNumber, 10)}");
+		}
+
+		private void button3_Click(object sender, EventArgs e)
+		{
+			Product product = new Product();
+			product.Name = "Apple";
+			product.Expiry = new DateTime(2008, 12, 28);
+			product.Sizes = new string[] { "Small" };
+
+			string json = JsonConvert.SerializeObject(product, Newtonsoft.Json.Formatting.Indented);
+			// {
+			//   "Name": "Apple",
+			//   "Expiry": "2008-12-28T00:00:00",
+			//   "Sizes": [
+			//     "Small"
+			//   ]
+			// }
+
+			MessageBox.Show($"Json test: {json}");
 		}
 	}
 }
