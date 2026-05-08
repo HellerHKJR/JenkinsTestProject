@@ -72,9 +72,11 @@ def modifyAppConfig(configPath, startupArgValue) {
                 Write-Host "Save Completed!"
             } else {
                 Write-Error "CRITICAL: Could not find 'StartupArg' node in the XML structure!"
+                exit 1
             }
         } else {
             Write-Error "CRITICAL: Config file NOT FOUND at ${configPath}"
+            exit 1
         }
     """
 }
@@ -94,12 +96,17 @@ def deleteUnnecessaryFolders(folderNames) {
     }
 }
 
+def runInnoSetup(version, projectName, configPath) {
+    def isccPath = "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe"
+    bat """ "${isccPath}" /dVersionInfo=${version} /dProjectName=${projectName} /dConfigPath=${configPath} inno_setup.iss """
+}
+
 pipeline {
     agent any
 
     environment {
         // location of devenv.com, adjust if your Visual Studio version or edition is different
-        DEVENV = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\devenv.com"
+        DEVENV = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\devenv.com"		
     }
 
     stages {            
@@ -162,4 +169,21 @@ pipeline {
             }
         }
     }
+
+    post {
+        success {
+            echo "=========================================="
+            echo "Build completed successfully!"
+            echo "Installer: HS3_${params.ProjectName}_Installer_v${VERSION}.exe"
+            echo "=========================================="
+        }
+        failure {
+            echo "=========================================="
+            echo "Build failed! Check the logs above."
+            echo "=========================================="
+        }
+        always {
+            echo "Build finished at ${new Date()}"
+        }
+    }    
 }
