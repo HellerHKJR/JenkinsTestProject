@@ -32,7 +32,36 @@ pipeline {
         DEVENV = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\devenv.com"
     }
 
-    stages {        
+    stages {            
+        stage('Printout Workspace') {
+            steps {
+                echo "=========================================="
+                echo "Workspace Path: ${WORKSPACE}"
+                echo "=========================================="
+                
+                // Show directory structure with tree (recommended)
+                bat """
+                    echo.
+                    echo === Workspace Directory Tree ===
+                    tree /F /A
+                """
+                
+                // Alternative: Simple directory listing
+                bat """
+                    echo.
+                    echo === Root Directory Contents ===
+                    dir /B
+                """
+                
+                // Show specific subdirectories
+                bat """
+                    echo.
+                    echo === JenkinsTestProject Directory ===
+                    dir JenkinsTestProject /S /B
+                """
+            }
+        }
+
         stage('Get Version') {
             steps {                
                 script {                             
@@ -40,10 +69,6 @@ pipeline {
                     VERSION = version                    
                     echo "Version: ${VERSION}, StartupArg: ${params.StartupArg}"
                 }
-
-                echo "Workspace: ${WORKSPACE}"
-                bat "echo %WORKSPACE%"
-                bat "dir"
             }
         }
 
