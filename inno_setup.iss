@@ -13,7 +13,7 @@ AppSupportURL=https://www.hellerindustries.com/support
 AppUpdatesURL=https://www.hellerindustries.com/updates
 
 ; Installation directories
-DefaultDirName={autopf}\Heller Industries\{#ProjectName}
+DefaultDirName=C:\Heller Industries\{#ProjectName}
 DefaultGroupName=Heller Industries\{#ProjectName}
 DisableProgramGroupPage=yes
 
@@ -23,23 +23,19 @@ OutputBaseFilename=HS3_{#ProjectName}_Installer_v{#VersionInfo}
 
 ; Uninstall configuration
 UninstallDisplayIcon={app}\Remote.ico
-UninstallDisplayName=Heller {#ProjectName} v{#VersionInfo}
+UninstallDisplayName=Heller {#ProjectName}
 
 ; Privileges and compatibility
 PrivilegesRequired=admin
-PrivilegesRequiredOverridesAllowed=dialog
 Compression=lzma2
 SolidCompression=yes
 
 ; Visual settings
 WizardStyle=modern
-SetupIconFile=JenkinsTestProject\Remote.ico
+DisableReadyPage=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
-
-[Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}";
 
 [Files]
 Source: "bin\Release\*.*"; DestDir: "{app}"; Flags: ignoreversion
@@ -47,9 +43,6 @@ Source: "bin\Release\Config\*.*"; DestDir: "{app}\Config"; Flags: ignoreversion
 Source: "bin\Release\Config\{#ConfigPath}\*.*"; DestDir: "{app}\Config\{#ConfigPath}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{commondesktop}\Heller {#ProjectName}"; Filename: "{app}\JenkinsTestProject.exe"; IconFilename: "{app}\Remote.ico"; Tasks: desktopicon
+Name: "{commondesktop}\Heller {#ProjectName}"; Filename: "{app}\JenkinsTestProject.exe"; IconFilename: "{app}\Remote.ico"
 Name: "{group}\Heller {#ProjectName}"; Filename: "{app}\JenkinsTestProject.exe"; IconFilename: "{app}\Remote.ico"
 Name: "{group}\Uninstall Heller {#ProjectName}"; Filename: "{uninstallexe}"
-
-[Run]
-Filename: "{app}\JenkinsTestProject.exe"; Description: "{cm:LaunchProgram,Heller {#ProjectName}}"; Flags: nowait postinstall skipifsilent
