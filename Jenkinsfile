@@ -52,12 +52,12 @@ def printWorkspaceTree() {
     '''
 }
 
-def modifyAppConfig(configPath, startupArgValue) {
+def modifyAppConfig(configPath, startupArgValue, frameworkName) {
     powershell """
         if (Test-Path '${configPath}') {
             [xml]\$xml = Get-Content '${configPath}'
             
-            \$node = \$xml.configuration.applicationSettings.'JenkinsTestProject.Properties.Settings'.setting | Where-Object { \$_.name -eq 'StartupArg' }
+            \$node = \$xml.configuration.applicationSettings.'${frameworkName}.Properties.Settings'.setting | Where-Object { \$_.name -eq 'StartupArg' }
 
             if (\$node) {
                 Write-Host "Current Value in XML: " \$node.value
@@ -101,9 +101,9 @@ def runInnoSetup(version, projectName, configPath) {
     bat """ "${isccPath}" /dVersionInfo=${version} /dProjectName=${projectName} /dConfigPath=${configPath} inno_setup.iss """
 }
 
-def restoreNuGetPackages() {
+def restoreNuGetPackages(solutionName) {
     bat '''
-        C:\\nuget\\nuget.exe restore JenkinsTestProject.sln -NonInteractive -Verbosity quiet
+        C:\\nuget\\nuget.exe restore ${solutionName}.sln -NonInteractive -Verbosity quiet
     '''
 }
 
@@ -112,7 +112,8 @@ pipeline {
 
     environment {
         // location of devenv.com, adjust if your Visual Studio version or edition is different
-        DEVENV = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\devenv.com"		
+        DEVENV = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\devenv.com"
+        FRAMEWORK_NAME = "JenkinsTestProject"
     }
 
     stages {            
@@ -135,7 +136,7 @@ pipeline {
                     echo "=========================================="
                     echo "Restoring NuGet packages"
                     echo "=========================================="
-                    restoreNuGetPackages()
+                    restoreNuGetPackages(FRAMEWORK_NAME)
                 }
             }
         }
@@ -143,7 +144,7 @@ pipeline {
         stage('Get Version') {
             steps {                
                 script {                             
-                    def version = getVersionFromXML("JenkinsTestProject/Config/${params.StartupArg}")
+                    def version = getVersionFromXML("${FRAMEWORK_NAME}/Config/${params.StartupArg}")
                     VERSION = version                    
                     echo "Version: ${VERSION}, StartupArg: ${params.StartupArg}"
                 }
@@ -152,7 +153,7 @@ pipeline {
 
         stage('Build') {
             steps {                
-                bat "\"${DEVENV}\" JenkinsTestProject.sln /Rebuild \"Release|Any CPU\""
+                bat "\"${DEVENV}\" \"${FRAMEWORK_NAME}\".sln /Rebuild \"Release|Any CPU\""
             }
         }
 
@@ -160,12 +161,12 @@ pipeline {
             steps {
                 script {
                     def startupArgValue = params.StartupArg
-                    def configPath = "${WORKSPACE}\\bin\\Release\\JenkinsTestProject.exe.config"
+                    def configPath = "${WORKSPACE}\\bin\\Release\\\"${FRAMEWORK_NAME}\".exe.config"
 
                     echo "Target File: ${configPath}"
                     echo "New Value: ${startupArgValue}"
 
-                    modifyAppConfig(configPath, startupArgValue)
+                    modifyAppConfig(configPath, startupArgValue, FRAMEWORK_NAME)
                 }
             }
         }
