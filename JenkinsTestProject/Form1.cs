@@ -16,6 +16,8 @@ namespace JenkinsTestProject
 {
 	public partial class Form1 : Form
 	{
+		int testVariable = 42;
+
 		public Form1()
 		{
 			InitializeComponent();
