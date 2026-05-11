@@ -153,14 +153,16 @@ pipeline {
 
         stage('Build') {
             steps {                
-                bat "\"${DEVENV}\" \"${FRAMEWORK_NAME}\".sln /Rebuild \"Release|Any CPU\""
+                script {      
+                    bat "\"${DEVENV}\" \"${FRAMEWORK_NAME}\".sln /Rebuild \"Release|Any CPU\""
 
-                // Verify output exists
-                if (!fileExists("bin\\Release\\${FRAMEWORK_NAME}.exe")) {
-                    error("Build verification failed - executable not found!")
-                }
+                    // Verify output exists
+                    if (!fileExists("bin\\Release\\${FRAMEWORK_NAME}.exe")) {
+                        error("Build verification failed - executable not found!")
+                    }
                     
-                echo "Build verified successfully!"
+                    echo "Build verified successfully!"
+                }
             }
         }
 
