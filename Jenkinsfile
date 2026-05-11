@@ -161,7 +161,7 @@ pipeline {
             steps {
                 script {
                     def startupArgValue = params.StartupArg
-                    def configPath = "${WORKSPACE}\\bin\\Release\\\"${FRAMEWORK_NAME}\".exe.config"
+                    def configPath = "${WORKSPACE}\\bin\\Release\\${FRAMEWORK_NAME}.exe.config"
 
                     echo "Target File: ${configPath}"
                     echo "New Value: ${startupArgValue}"
