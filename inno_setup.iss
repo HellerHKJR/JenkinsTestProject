@@ -3,7 +3,6 @@
 
 [Setup]
 ; Basic application information
-AppId={{YOUR-GUID-HERE}
 AppName=JenkinsTestProject_{#ProjectName}
 AppVersion={#VersionInfo}
 AppVerName=Heller_{#ProjectName}_v{#VersionInfo}
