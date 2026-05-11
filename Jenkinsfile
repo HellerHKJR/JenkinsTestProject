@@ -102,9 +102,9 @@ def runInnoSetup(version, projectName, configPath) {
 }
 
 def restoreNuGetPackages(solutionName) {
-    bat '''
+    bat """
         C:\\nuget\\nuget.exe restore ${solutionName}.sln -NonInteractive -Verbosity quiet
-    '''
+    """
 }
 
 pipeline {
