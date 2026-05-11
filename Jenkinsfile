@@ -154,7 +154,7 @@ pipeline {
         stage('Build') {
             steps {                
                 script {      
-                    bat "\"${DEVENV}\" \"${FRAMEWORK_NAME}\".sln /Rebuild \"Release|Any CPU\""
+                    bat "\"${DEVENV}\" ${FRAMEWORK_NAME}.sln /Rebuild \"Release|Any CPU\""
 
                     // Verify output exists
                     if (!fileExists("bin\\Release\\${FRAMEWORK_NAME}.exe")) {
