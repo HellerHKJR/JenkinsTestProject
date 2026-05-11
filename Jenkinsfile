@@ -153,7 +153,7 @@ pipeline {
 
         stage('Build') {
             steps {                
-                bat "\"${DEVENV}\" \"${FRAMEWORK_NAME}\".sln /Rebuild \"Release|Any CPU\""
+                bat "\"${DEVENV}\" ${FRAMEWORK_NAME}.sln /Rebuild \"Release|Any CPU\""
             }
         }
 
