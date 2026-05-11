@@ -183,9 +183,8 @@ pipeline {
         stage('Inno Setup') {
             steps {
                 script {
-                    // inno setup
                     def extractedConfigPath = params.StartupArg.split('/')[0]
-                    bat """ "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" /dVersionInfo=${VERSION} /dProjectName=${params.ProjectName} /dConfigPath=${extractedConfigPath} inno_setup.iss """
+                    runInnoSetup(VERSION, params.ProjectName, extractedConfigPath)
                 }
             }
         }
